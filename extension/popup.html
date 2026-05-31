@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RakshaNet Shield</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      width: 380px;
+      min-height: 520px;
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #0A0A0F;
+      color: #F8FAFC;
+      overflow-x: hidden;
+    }
+
+    /* Variables */
+    :root {
+      --primary: #ec4899;
+      --accent: #f472b6;
+      --danger: #EF4444;
+      --warning: #F59E0B;
+      --safe: #22C55E;
+      --bg: #0A0A0F;
+      --surface: #12121A;
+      --card: #1A1A2E;
+      --border: #2A2A3E;
+      --text-primary: #F8FAFC;
+      --text-secondary: #94A3B8;
+      --text-muted: #64748B;
+    }
+
+    /* Grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(236,72,153,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(236,72,153,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      padding: 16px;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      box-shadow: 0 0 20px rgba(236,72,153,0.3);
+    }
+    .logo-text {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+    }
+    .logo-text span {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--safe);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(34,197,94,0.4); }
+      50% { opacity: 0.8; box-shadow: 0 0 0 6px rgba(34,197,94,0); }
+    }
+
+    /* Risk Card */
+    .risk-card {
+      background: rgba(26,26,46,0.6);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 16px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    .risk-card::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: inherit;
+      padding: 2px;
+      background: linear-gradient(135deg, var(--primary), var(--accent), #8B5CF6, var(--primary));
+      background-size: 300% 300%;
+      animation: gradient-rotate 8s ease infinite;
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask-composite: exclude;
+      -webkit-mask-composite: xor;
+      opacity: 0.5;
+    }
+    @keyframes gradient-rotate {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .risk-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .risk-label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .risk-safe { color: var(--safe); }
+    .risk-warning { color: var(--warning); }
+    .risk-danger { color: var(--danger); }
+
+    /* Gauge */
+    .gauge-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+    .gauge-score {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 36px;
+      font-weight: 800;
+    }
+
+    /* Domain info */
+    .domain-info {
+      background: rgba(18,18,26,0.8);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+    .domain-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 4px;
+      word-break: break-all;
+    }
+    .domain-meta {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* Checks list */
+    .checks-list {
+      margin-bottom: 16px;
+    }
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      margin-bottom: 6px;
+      background: rgba(18,18,26,0.5);
+      border: 1px solid transparent;
+      transition: all 0.2s ease;
+      font-size: 13px;
+    }
+    .check-item:hover {
+      border-color: rgba(236,72,153,0.2);
+      background: rgba(236,72,153,0.05);
+    }
+    .check-icon { font-size: 16px; flex-shrink: 0; }
+    .check-text { flex: 1; color: var(--text-secondary); }
+    .check-badge {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 20px;
+      text-transform: uppercase;
+    }
+    .badge-safe { background: rgba(34,197,94,0.15); color: var(--safe); border: 1px solid rgba(34,197,94,0.3); }
+    .badge-warning { background: rgba(245,158,11,0.15); color: var(--warning); border: 1px solid rgba(245,158,11,0.3); }
+    .badge-danger { background: rgba(239,68,68,0.15); color: var(--danger); border: 1px solid rgba(239,68,68,0.3); }
+
+    /* AI Explanation */
+    .ai-section {
+      background: rgba(236,72,153,0.05);
+      border: 1px solid rgba(236,72,153,0.15);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 16px;
+    }
+    .ai-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+    .ai-text {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Actions */
+    .actions {
+      display: flex;
+      gap: 8px;
+    }
+    .btn {
+      flex: 1;
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      box-shadow: 0 0 20px rgba(236,72,153,0.3);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba(236,72,153,0.5);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+    .btn-outline:hover {
+      background: rgba(236,72,153,0.1);
+    }
+    .btn-danger {
+      background: linear-gradient(135deg, var(--danger), #DC2626);
+      color: white;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 12px 0 4px;
+      font-size: 10px;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      margin-top: 16px;
+    }
+    .footer a { color: var(--primary); text-decoration: none; }
+
+    /* Scan animation */
+    .scanning {
+      position: relative;
+      overflow: hidden;
+    }
+    .scanning::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--primary), transparent);
+      animation: scan 2s linear infinite;
+    }
+    @keyframes scan {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(520px); }
+    }
+
+    /* Loading */
+    .loading-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 300px;
+      gap: 16px;
+    }
+    .spinner {
+      width: 48px;
+      height: 48px;
+      border: 3px solid var(--border);
+      border-top: 3px solid var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Threat indicators */
+    .indicators {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .indicator-tag {
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      background: rgba(239,68,68,0.1);
+      color: var(--danger);
+      border: 1px solid rgba(239,68,68,0.2);
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="app">
+    <!-- Loading State -->
+    <div id="loading" class="loading-container" style="display: none;">
+      <div class="spinner"></div>
+      <div style="color: var(--primary); font-size: 14px; font-weight: 600;">Scanning URL...</div>
+      <div style="color: var(--text-muted); font-size: 11px;">AI agents analyzing threat level</div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main">
+      <!-- Header -->
+      <div class="header">
+        <div class="header-left">
+          <div class="logo-icon">🛡️</div>
+          <div class="logo-text"><span>RakshaNet</span> Shield</div>
+        </div>
+        <div class="status-dot"></div>
+      </div>
+
+      <!-- Risk Card -->
+      <div class="risk-card scanning" id="risk-card">
+        <div class="risk-header">
+          <div class="risk-label" id="risk-label">ANALYZING...</div>
+          <div id="risk-badge" class="check-badge badge-safe">SAFE</div>
+        </div>
+
+        <div class="gauge-container">
+          <svg width="140" height="100" viewBox="0 0 140 100">
+            <path d="M 15 85 A 55 55 0 0 1 125 85" fill="none" stroke="#2A2A3E" stroke-width="10" stroke-linecap="round"/>
+            <path id="gauge-arc" d="M 15 85 A 55 55 0 0 1 125 85" fill="none" stroke="#22C55E" stroke-width="10" stroke-linecap="round" stroke-dasharray="0 200"/>
+            <text id="gauge-score" x="70" y="75" text-anchor="middle" class="gauge-score" fill="#22C55E">0</text>
+            <text x="70" y="95" text-anchor="middle" fill="#64748B" font-size="10">Risk Score</text>
+          </svg>
+        </div>
+
+        <!-- Domain Info -->
+        <div class="domain-info">
+          <div class="domain-name" id="domain-name">Loading...</div>
+          <div class="domain-meta" id="domain-meta">Analyzing current page</div>
+        </div>
+      </div>
+
+      <!-- Security Checks -->
+      <div class="checks-list" id="checks-list">
+        <div class="check-item">
+          <span class="check-icon">🔒</span>
+          <span class="check-text">SSL Certificate</span>
+          <span class="check-badge badge-safe" id="check-ssl">Checking...</span>
+        </div>
+        <div class="check-item">
+          <span class="check-icon">🌐</span>
+          <span class="check-text">Domain Reputation</span>
+          <span class="check-badge badge-safe" id="check-domain">Checking...</span>
+        </div>
+        <div class="check-item">
+          <span class="check-icon">🎯</span>
+          <span class="check-text">Typosquatting Check</span>
+          <span class="check-badge badge-safe" id="check-typo">Checking...</span>
+        </div>
+        <div class="check-item">
+          <span class="check-icon">📧</span>
+          <span class="check-text">Phishing Detection</span>
+          <span class="check-badge badge-safe" id="check-phish">Checking...</span>
+        </div>
+        <div class="check-item">
+          <span class="check-icon">🤖</span>
+          <span class="check-text">AI Threat Analysis</span>
+          <span class="check-badge badge-safe" id="check-ai">Checking...</span>
+        </div>
+      </div>
+
+      <!-- AI Explanation -->
+      <div class="ai-section" id="ai-section">
+        <div class="ai-header">
+          <span>⚡</span> AI Analysis
+        </div>
+        <div class="ai-text" id="ai-text">
+          Analyzing page content with multi-agent AI system...
+        </div>
+        <div class="indicators" id="indicators"></div>
+      </div>
+
+      <!-- Actions -->
+      <div class="actions">
+        <button class="btn btn-primary" id="btn-report" onclick="openDashboard()">
+          📊 Dashboard
+        </button>
+        <button class="btn btn-outline" id="btn-report-scam" onclick="reportScam()">
+          🚨 Report
+        </button>
+      </div>
+
+      <div class="footer">
+        Powered by <a href="#">RakshaNet Shield AI</a> • v1.0.0
+      </div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

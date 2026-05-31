@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "RakshaNet Shield",
+  "description": "AI-Powered Cyber Fraud Protection — Real-time URL scanning, phishing detection, and scam alerts.",
+  "version": "1.0.0",
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "activeTab",
+    "storage",
+    "alarms"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
