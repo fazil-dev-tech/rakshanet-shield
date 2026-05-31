@@ -144,7 +144,7 @@
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/YOUR_USERNAME/rakshanet-shield.git
+   git clone https://github.com/fazil-dev-tech/rakshanet-shield.git
    cd rakshanet-shield
    ```
 

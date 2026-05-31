@@ -26,7 +26,7 @@ This project adheres to our [Code of Conduct](CODE_OF_CONDUCT.md). By participat
 1. **Fork** the repository on GitHub
 2. **Clone** your fork locally:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/rakshanet-shield.git
+   git clone https://github.com/fazil-dev-tech/rakshanet-shield.git
    cd rakshanet-shield
    ```
 3. **Install** dependencies:
