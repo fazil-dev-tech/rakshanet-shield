@@ -29,7 +29,7 @@ export default function SettingsPage() {
         const puter = puterModule.puter || puterModule.default || puterModule;
         try {
           if (puter?.auth?.isSignedIn()) {
-            puter.auth.getUser().then((user: { username: string; email: string } | null) => {
+            puter.auth.getUser().then((user: any) => {
               if (user) {
                 setPuterUser({ username: user.username, email: user.email });
               }
@@ -50,7 +50,7 @@ export default function SettingsPage() {
       const puter = puterModule.puter || puterModule.default || puterModule;
       try {
         await puter.auth.signIn();
-        const user = await puter.auth.getUser();
+        const user = (await puter.auth.getUser()) as any;
         if (user) {
           setPuterUser({ username: user.username, email: user.email });
         }
