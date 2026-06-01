@@ -365,3 +365,17 @@ This project is licensed under the **MIT License** — see the [LICENSE](LICENSE
 🛡️ *Protecting every citizen from cyber fraud, one scan at a time.*
 
 </div>
+
+---
+
+## 📞 Tech Solutions & Support
+
+Looking for custom tech solutions, enterprise implementations, or need support with this project? Let's connect!
+
+- **Contact Number / WhatsApp:** +91 7019145837
+- **GitHub Profile:** [@fazil-dev-tech](https://github.com/fazil-dev-tech)
+
+<div align="center">
+  <br/>
+  <i>Built with ❤️ by Fazil. Delivering Premium Tech Solutions.</i>
+</div>
